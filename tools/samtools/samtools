@@ -1,0 +1,3 @@
+#!/bin/sh
+#module load samtools/1.1
+$SAMTOOLSDIR/samtools $@

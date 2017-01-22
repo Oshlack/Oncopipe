@@ -1,0 +1,184 @@
+executor="torque"
+account="bioinf"
+walltime="36:00:00"
+mem_param="mem"
+memory="8"
+queue="batch"
+proc_mode="ppn"
+procs="1"
+nodes="1"
+// load all the modules at once -- TODO: possibly better to do per stage
+modules="bbmap blat bowtie2 fastqc gatk picard R rna-seqc samtools/1.1 star subread trimmomatic velvet vep perl/5.20.3"
+
+// Include ngs utils to make them available to pipeline
+libs="../tools/groovy-ngs-utils/1.0/groovy-ngs-utils.jar"
+
+// To lower contention on the variant database,
+// restrict the concurrency on updating it down to 1
+limits {
+    variantdb = 1
+}
+
+// notifications {
+//   oncopipe_operator {
+//     to="your_account@gmail.com"
+//     username="senderaccount@gmail.com"
+//     password="thepassword"
+//     events="STAGE_COMPLETED,FINISHED"
+//     interval="60000"
+//   }
+// }
+
+
+// Below is an example of how you could configure a command to be given more memory (in this case, 32GB)
+commands {
+   vcfcompare {
+      memory="32"
+   }
+   // star_gen2pass 16 threads used 35G ran for 50min, star_map_1pass_PE ran in 10 min
+   star {
+       memory="36"
+       procs="8"
+       walltime="06:00:00"
+       modules="star"
+   }
+   trim {
+       procs="4"
+       memory="12"
+       modules="trimmomatic"
+   }
+   fastqc {
+       walltime="04:00:00"
+       memory="4"
+       procs="8"
+       modules="fastqc"
+   }
+   // trimmomatic (4), bowtie2 (16)
+   direct_prepare_reads {
+       procs="8"
+       memory="12"
+       modules="trimmomatic bowtie2"
+   }
+   // bowtie2(16), samtools (1), reformat(16), dedupe(16)
+   direct_get_unmapped {
+       procs="8"
+       modules="bowtie2 samtools/1.1 bbmap"
+   }
+   // blat
+   direct_align_reads_to_annotation {
+       procs="1"
+       modules="blat"
+   }
+   // R
+   direct_filter_transcripts {
+       procs="1"
+       modules="R"
+   }
+   // reformat ? threads not set
+   direct_extract_fusion_sequences {
+       procs="1"
+       modules="bbmap"
+   }
+   // blat
+   direct_align_transcripts_to_genome {
+       procs="1"
+       modules="blat"
+   }
+   // samtools, R
+   direct_make_simple_reads_table {
+       procs="1"
+       modules="samtools/1.1 R"
+   }
+   // R
+   direct_get_final_list {
+       procs="1"
+       modules="R"
+   }
+   // R
+   direct_compile_all_results {
+       procs="1"
+       modules="R"
+   }
+   // trimmomatic (4), bowtie2 (16)
+   prepare_reads {
+       procs="8"
+       memory="12"
+       modules="trimmomatic bowtie2"
+   }
+   // bowtie2(16), samtools (1), reformat(16), dedupe(16)
+   get_unmapped {
+       procs="8"
+       modules="bowtie2 samtools/1.1 bbmap"
+   }
+   // blat
+   align_reads_to_annotation {
+       procs="1"
+       modules="blat"
+   }
+   // R
+   filter_transcripts {
+       procs="1"
+       modules="R"
+   }
+   // reformat ? threads not set
+   extract_fusion_sequences {
+       procs="1"
+       modules="bbmap"
+   }
+   // blat
+   align_transcripts_to_genome {
+       procs="1"
+       modules="blat"
+   }
+   // samtools, R
+   make_simple_reads_table {
+       procs="1"
+       modules="samtools/1.1 R"
+   }
+   // R
+   get_final_list {
+       procs="1"
+       modules="R"
+   }
+   // R
+   compile_all_results {
+       procs="1"
+       modules="R"
+   }
+   // featureCounts subread
+   // featureCounts dumped core when threaded (-T 8)
+   count {
+       procs="1"
+       modules="subread"
+   }
+   // R
+   predict_class {
+       procs="1"
+       modules="R"
+   }
+   // picard
+   picard {
+       procs="1"
+       modules="picard"
+       memory="6"
+   }
+   gatk {
+       procs="1"
+       modules="gatk"
+       memory="6"
+   }
+   vep {
+       procs="8"
+       modules="vep perl/5.20.3"
+   }
+   vep_filter {
+       procs="8"
+       modules="vep perl/5.20.3"
+   }
+   rna_seqc {
+       procs="1"
+       modules="rna-seqc java/1.7.0_79"
+       memory="6"
+   }
+
+}

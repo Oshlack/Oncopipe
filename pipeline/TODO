@@ -1,0 +1,23 @@
+Phred33 versus Phred64 encoding
+-------------------------------
+check_fastqc -- reports if phred64 encoding
+
+Another way to check is to use bbmap testformat
+(module load bbmap)
+$BBMAPDIR/bin/testformat in=input_R1.fastq.gz
+
+If it reports "sanger" then phred=33, if "illumina" then phred=64
+
+Can reformat input files using bbmap reformat
+$BBMAPDIR/bin/reformat in=input_R1.fastq.gz out=input_33_R1.fastq.gz qin=64 qout=33
+
+
+
+Examples of data files with phred64 encoding are JAFFA's Demo_Data.tar.gz (BT464-demo_1.fastq.gz and MCF7-demo_1.fastq.gz)!!
+
+-------------------------------
+
+Library
+Run
+Flow cell
+Instrument
