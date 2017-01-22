@@ -1,0 +1,68 @@
+executor="torque"
+account="bioinf"
+walltime="36:00:00"
+mem_param="mem"
+memory="8"
+queue="batch"
+proc_mode="ppn"
+procs="1"
+nodes="1"
+
+// Include ngs utils to make them available to pipeline
+libs="../tools/groovy-ngs-utils/1.0/groovy-ngs-utils.jar"
+
+// To lower contention on the variant database,
+// restrict the concurrency on updating it down to 1
+limits {
+    variantdb = 1
+}
+
+// Below is an example of how you could configure a command to be given more memory (in this case, 32GB)
+commands {
+   // trimmomatic (4), bowtie2 (16)
+   prepare_reads {
+       procs="1"
+       memory="12"
+       modules="trimmomatic bowtie2"
+   }
+   // bowtie2(16), samtools (1), reformat(16), dedupe(16)
+   get_unmapped {
+       procs="1"
+       modules="bowtie2 samtools/1.1 bbmap"
+   }
+   // blat
+   align_reads_to_annotation {
+       procs="1"
+       modules="blat"
+   }
+   // R
+   filter_transcripts {
+       procs="1"
+       modules="R"
+   }
+   // reformat ? threads not set
+   extract_fusion_sequences {
+       procs="1"
+       modules="bbmap"
+   }
+   // blat
+   align_transcripts_to_genome {
+       procs="1"
+       modules="blat"
+   }
+   // samtools, R
+   make_simple_reads_table {
+       procs="1"
+       modules="samtools/1.1 R"
+   }
+   // R
+   get_final_list {
+       procs="1"
+       modules="R"
+   }
+   // R
+   compile_all_results {
+       procs="1"
+       modules="R"
+   }
+}
