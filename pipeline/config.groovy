@@ -16,7 +16,7 @@
 // The base of everything - set this to the absolute path of the 
 // root of the pipeline distribution (most likely, parent folder of
 // the folder this file is in)
-BASE="/group/bioi1/rebeccae/oncopipe"
+BASE="\$HOME/Oncopipe"
 
 // Set a good location for storing large temp files here (probably not /tmp)
 TMPDIR="$BASE/tmpdata"
@@ -145,9 +145,9 @@ GROOVY_NGS="$TOOLS/groovy-ngs-utils/1.0.2"
 // (you can create a symlink to an existing directory with 
 // that name if desired).
 // See tools/vep/README for more information
-//VEP_VERSION="74"
-//VEP="$TOOLS/vep/$VEP_VERSION"
-VEPCACHE="/group/bioi1/rebeccae/cpipe/tools/vep/vep_cache/"
+VEP_VERSION="74"
+VEP="$TOOLS/vep/$VEP_VERSION"
+VEPCACHE="$VEP/vep_cache/"
 
 IGVTOOLS="$TOOLS/IGVTools/2.3.6"
 
