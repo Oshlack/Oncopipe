@@ -1,4 +1,7 @@
-# Oncopipe
+
+<p align="center">
+<img src= https://github.com/Oshlack/Oncopipe/blob/master/oncopipe2.png height=250/>
+</p>
 
 ## Synopsis
 Clinical pipeline for detecting gene fusions in RNAseq data utilising JAFFA.  The pipeline optionally calls a classifier for B-Cell Acute Lymphocytic Leukaemia (based on AllSorts).  As well as variant calling pipeline using Picard,GATK and VEP.
