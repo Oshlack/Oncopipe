@@ -37,7 +37,7 @@ cp /path/to/data/files/*.fastq.gz ./batches/{BATCH}/data/  ## or symlink (ln -s)
 ./pipeline/scripts/create_batch.sh {BATCH} B_ALL designs/B_ALL/B_ALL.bed
 
 cd ./batches/{BATCH}/analysis
-bpipe run ../../../pipelines/pipeline.groovy ../samples.txt
+bpipe run ../../../pipeline/pipeline.groovy ../samples.txt
 ```
 
 ## Motivation
